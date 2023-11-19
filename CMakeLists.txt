@@ -35,7 +35,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   endif()
 endif()
 
-add_subdirectory(src)
+add_subdirectory(src/mainwindow)
+add_subdirectory(src/dbcontroller)
 
 # Testing only available if this is the main app
 # Emergency override MODERN_CMAKE_BUILD_TESTING provided as well
