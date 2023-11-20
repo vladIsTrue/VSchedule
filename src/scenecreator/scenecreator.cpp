@@ -15,7 +15,7 @@ SceneCreator::~SceneCreator()
 
 void SceneCreator::setQueryFromDB(QString query, QueryCode code)
 {
-    // TODO обработка ошибок
+    // TODO mistale handling
     switch (code)
     {
     case QueryCode::EMPLOYEES:

@@ -1,23 +1,20 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "../scenecreator/scenecreator.h"
 #include "../dbcontroller/pgdbcontroller.h"
-#include <QMainWindow>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include <QMainWindow>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
-    Ui::MainWindow  *m_ui;
     IDBController   *m_dbController;
+    SceneCreator    *m_sceneCreator;
 };
 #endif // MAINWINDOW_H

@@ -37,6 +37,7 @@ endif()
 
 add_subdirectory(src/mainwindow)
 add_subdirectory(src/dbcontroller)
+add_subdirectory(src/scenecreator)
 
 # Testing only available if this is the main app
 # Emergency override MODERN_CMAKE_BUILD_TESTING provided as well

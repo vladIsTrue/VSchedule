@@ -1,14 +1,14 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
-#include <QSqlQueryModel>
+#include "./ui_mainwindow.h" // скорее всего она нахуй нужна не будет
+
+#include <QGraphicsView>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , m_ui(new Ui::MainWindow)
     , m_dbController(new PgDBController())
+    , m_sceneCreator(new SceneCreator())
 {
-    m_ui->setupUi(this);
-
     if (m_dbController->connectToDB()) {
         qDebug() << "Server opens database.";
     }
@@ -16,18 +16,12 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug() << "Database open error.";
     }
 
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery("SELECT name, startofvacation, endofvacation FROM employees");
-    model->setHeaderData(0, Qt::Horizontal, tr("Name"));
-    model->setHeaderData(1, Qt::Horizontal, tr("startofvacation"));
-    model->setHeaderData(1, Qt::Horizontal, tr("endofvacation"));
+    m_sceneCreator->setQueryFromDB("SELECT name, startofvacation, endofvacation FROM employees", QueryCode::EMPLOYEES);
 
-    m_ui->tableView->setModel(model);
-    m_ui->tableView->show();
+    QGraphicsView *view = new QGraphicsView(m_sceneCreator->createScene(), this);
+    setCentralWidget(view);
 }
 
 MainWindow::~MainWindow()
-{
-    delete m_ui;
-}
+{}
 
