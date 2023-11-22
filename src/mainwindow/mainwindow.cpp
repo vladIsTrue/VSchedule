@@ -10,28 +10,40 @@ MainWindow::MainWindow(QWidget *parent)
     , m_sceneCreator(new SceneCreator())
     , m_ui(new Ui::MainWindow)
 {
-    m_ui->setupUi(this);
-
-    if (m_dbController->connectToDB()) {
+    if (m_dbController->connectToDB())
         qDebug() << "Server opens database.";
-    }
-    else {
+    else
         qDebug() << "Database open error.";
-    }
 
-    m_sceneCreator->setQueryFromDB("SELECT name, startofvacation, endofvacation FROM employees", QueryCode::EMPLOYEES);
-    m_sceneCreator->setQueryFromDB("SELECT mounth, numberofemployees FROM standards", QueryCode::STANDARDS);
-
-    mainScene = m_sceneCreator->createScene(); // это все тоже нужно переделать
-
-    m_ui->mainView->setScene(mainScene);
-    m_ui->mainView->setAlignment(Qt::AlignTop);
-
-    m_ui->mainView->setScene(mainScene);
+    setupUI();
 }
 
 MainWindow::~MainWindow()
 {}
+
+void MainWindow::setupUI()
+{
+    m_ui->setupUi(this);
+
+    auto resultSelect =
+        m_sceneCreator->setQueryFromDB("SELECT name, startofvacation, endofvacation FROM employees"
+                                       , QueryCode::EMPLOYEES);
+
+    if(resultSelect.isValid())
+        qDebug() << resultSelect;
+
+    resultSelect =
+        m_sceneCreator->setQueryFromDB("SELECT mounth, numberofemployees FROM standards"
+                                      , QueryCode::STANDARDS);
+
+    if(resultSelect.isValid())
+        qDebug() << resultSelect;
+
+    mainScene = m_sceneCreator->createScene(); // это все тоже нужно переделать
+
+    m_ui->mainView->setAlignment(Qt::AlignTop);
+    m_ui->mainView->setScene(mainScene);
+}
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {

@@ -17,6 +17,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void setupUI();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
