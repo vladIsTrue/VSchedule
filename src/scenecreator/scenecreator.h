@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include <QVector>
+#include <QSqlError>
 #include <QGraphicsScene>
 #include <QtSql/QSqlQuery>
 
@@ -19,7 +20,7 @@ public:
     SceneCreator();
     ~SceneCreator();
 
-    void setQueryFromDB(QString query, QueryCode code);
+    QSqlError setQueryFromDB(QString query, QueryCode code);
     QGraphicsScene* createScene();
 
 private:
@@ -29,11 +30,12 @@ private:
     QSqlQuery* m_employeesQuery;
     QSqlQuery* m_stardardsQuery;
 
-    const int m_mounthCount         = 12; // it's bad
+    const int m_scale               = 2;
+    const int m_mounthCount         = 12;
     const int m_heightRow           = 15;
     const int m_dayOfMounth         = 30;
     const int m_widthEmployeeName   = 200;
-    const int m_scale               = 2;
+
     int m_currentRow                = 0;
 
     struct
@@ -41,7 +43,7 @@ private:
         int standardNumber = 0;
         int currentNumber = 0;
 
-    } m_standards[12]; // it's bad
+    } m_standards[12];
 
     const char* m_mounth[12] = {"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ",
                                "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ",

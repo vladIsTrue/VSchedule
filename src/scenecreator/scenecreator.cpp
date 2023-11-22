@@ -1,8 +1,6 @@
 #include "scenecreator.h"
 
-
 #include <QDate>
-#include <QLabel>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
 
@@ -14,17 +12,16 @@ SceneCreator::SceneCreator()
 SceneCreator::~SceneCreator()
 {}
 
-void SceneCreator::setQueryFromDB(QString query, QueryCode code)
+QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
 {
-    // TODO mistale handling
     switch (code)
     {
     case QueryCode::EMPLOYEES:
         m_employeesQuery = new QSqlQuery(query);
-        break;
+        return m_employeesQuery->lastError();
     case QueryCode::STANDARDS:
         m_stardardsQuery = new QSqlQuery(query);
-        break;
+        return m_stardardsQuery->lastError();
     }
 }
 
@@ -109,38 +106,19 @@ QGraphicsScene* SceneCreator::createScene()
 void SceneCreator::fillStandardsVec()
 {
     while(m_stardardsQuery->next())
-    {
-        if (m_stardardsQuery->value(0).toString() == m_mounth[0])
-            m_standards[0].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[1])
-            m_standards[1].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[2])
-            m_standards[2].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[3])
-            m_standards[3].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[4])
-            m_standards[4].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[5])
-            m_standards[5].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[6])
-            m_standards[6].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[7])
-            m_standards[7].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[8])
-            m_standards[8].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[9])
-            m_standards[9].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[10])
-            m_standards[10].standardNumber = m_stardardsQuery->value(1).toInt();
-        if (m_stardardsQuery->value(0).toString() == m_mounth[11])
-            m_standards[11].standardNumber = m_stardardsQuery->value(1).toInt();
-    }
+        for(int i = 0; i < m_mounthCount; ++i)
+            if (m_stardardsQuery->value(0).toString() == m_mounth[i])
+            {
+                m_standards[i].standardNumber = m_stardardsQuery->value(1).toInt();
+                break;
+            }
 }
 
 void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemRect, QString text)
 {
-    QGraphicsTextItem *textItem = scene->addText(text);
     qreal x1Rect, y1Rect, widthRect, heightRect;
+
+    QGraphicsTextItem *textItem = scene->addText(text);
     itemRect->rect().getRect(&x1Rect, &y1Rect, &widthRect, &heightRect);
     textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);
