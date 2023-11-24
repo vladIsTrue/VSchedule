@@ -39,6 +39,7 @@ public:
 private:
     void fillStandardsVec();
     void addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemRect, QString text);
+    void drawLine(QGraphicsScene* scene);
 
     QSqlQuery* m_employeesQuery;
     QSqlQuery* m_stardardsQuery;

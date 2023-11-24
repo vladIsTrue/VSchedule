@@ -59,13 +59,7 @@ QGraphicsScene* SceneCreator::createScene()
         //place the number of employee vacation days in the center of the rectangle
         addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
 
-        //////////////////////////////////////////////////////////////////////////////
-        scene->addLine(0
-                       , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                       , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                       , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                       , QPen(Qt::black));
-        //////////////////////////////////////////////////////////////////////////////
+        drawLine(scene);
 
         //create a value storing the employee's name
         QGraphicsTextItem *nameEmployeeItem = new QGraphicsTextItem(name);
@@ -81,13 +75,7 @@ QGraphicsScene* SceneCreator::createScene()
         ++m_currentNumberRows;
     }
 
-    //////////////////////////////////////////////////////////////////////////////
-    scene->addLine(0
-                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                   , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                   , QPen(Qt::black));
-    //////////////////////////////////////////////////////////////////////////////
+    drawLine(scene);
 
     for (int i = 0; i < m_monthsNumber; ++i)
     {
@@ -104,13 +92,11 @@ QGraphicsScene* SceneCreator::createScene()
                                   , QPen(Qt::black)
                                   , selectedBrush);
 
-        /////////////////////////////////////////////////////////////////
         scene->addLine(m_widthEmployeeName + m_dayOfMonth * i * m_scale
                        , 0
                        , m_widthEmployeeName + m_dayOfMonth * i * m_scale
                        , (m_currentNumberRows + 1) * m_heightRow
                        , QPen(Qt::black));
-        /////////////////////////////////////////////////////////////////
 
         itemRect->setPos(m_widthEmployeeName, 0);
         addTextToRect(scene, itemRect, m_months[i]);
@@ -143,4 +129,13 @@ void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemR
     itemRect->rect().getRect(&x1Rect, &y1Rect, &widthRect, &heightRect);
     textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);
+}
+
+void SceneCreator::drawLine(QGraphicsScene* scene)
+{
+    scene->addLine(0
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                   , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                   , QPen(Qt::black));
 }
