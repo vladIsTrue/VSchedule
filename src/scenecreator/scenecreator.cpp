@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
+#include <numeric>
 
 SceneCreator::SceneCreator()
     : m_employeesQuery(nullptr)
@@ -83,7 +84,7 @@ QGraphicsScene* SceneCreator::createScene()
                    , QPen(Qt::black));
 
 
-    for (int i = 0; i < m_monthsNumber; ++i)
+    for (int i = 0; i < NUMBEROFMONTHS; ++i)
     {
         QGraphicsRectItem* itemRect = nullptr;
 
@@ -91,20 +92,35 @@ QGraphicsScene* SceneCreator::createScene()
                              ? QBrush(Qt::red)
                              : QBrush(Qt::green);
 
+<<<<<<< HEAD
         itemRect = scene->addRect(m_dayOfMonth * m_scale * i
                                   , (m_currentNumberRows + 1) * m_heightRow
                                   , m_dayOfMonth * m_scale
+=======
+        itemRect = scene->addRect(accumulateDays(i)
+                                  , (m_currentNumberRows + 0.5) * m_heightRow
+                                  , m_months[i].second * m_scale
+>>>>>>> 797ea13 (months now have the correct number of days)
                                   , m_heightRow
                                   , QPen(Qt::black)
                                   , selectedBrush);
 
+<<<<<<< HEAD
+=======
+        scene->addLine(m_widthEmployeeName + accumulateDays(i)
+                       , 0
+                       , m_widthEmployeeName + accumulateDays(i)
+                       , (m_currentNumberRows + 1) * m_heightRow
+                       , QPen(Qt::black));
+
+>>>>>>> 797ea13 (months now have the correct number of days)
         itemRect->setPos(m_widthEmployeeName, 0);
-        addTextToRect(scene, itemRect, m_months[i]);
+        addTextToRect(scene, itemRect, m_months[i].first);
     }
 
     scene->setSceneRect(0
                         , 0
-                        , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
+                        , m_daysInYear * m_scale + m_widthEmployeeName
                         , m_heightRow * m_currentNumberRows + m_indentation);
 
     return scene;
@@ -113,8 +129,8 @@ QGraphicsScene* SceneCreator::createScene()
 void SceneCreator::fillStandardsVec()
 {
     while(m_stardardsQuery->next())
-        for(int i = 0; i < m_monthsNumber; ++i)
-            if (m_stardardsQuery->value(0).toString() == m_months[i])
+        for(int i = 0; i < NUMBEROFMONTHS; ++i)
+            if (m_stardardsQuery->value(0).toString() == m_months[i].first)
             {
                 m_standards[i].standardNumber = m_stardardsQuery->value(1).toInt();
                 break;
@@ -130,3 +146,26 @@ void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemR
     textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);
 }
+<<<<<<< HEAD
+=======
+
+void SceneCreator::drawLine(QGraphicsScene* scene)
+{
+    scene->addLine(0
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                   , 365 * m_scale + m_widthEmployeeName
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                   , QPen(Qt::black));
+}
+
+int SceneCreator::accumulateDays(int end)
+{
+    auto sum = 0;
+    for (int j = 0; j < end; ++j)
+    {
+        sum += (m_months[j].second * m_scale);
+    }
+
+    return sum;
+}
+>>>>>>> 797ea13 (months now have the correct number of days)
