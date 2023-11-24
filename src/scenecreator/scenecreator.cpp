@@ -23,13 +23,13 @@ QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
         m_stardardsQuery = new QSqlQuery(query);
         return m_stardardsQuery->lastError();
     default:
-        return QSqlError("invalid code");
+        return QSqlError("Invalid code");
     }
 }
 
 QGraphicsScene* SceneCreator::createScene()
 {
-    QGraphicsScene * scene = new QGraphicsScene();
+    QGraphicsScene* scene = new QGraphicsScene();
 
     fillStandardsVec();
 
@@ -46,7 +46,7 @@ QGraphicsScene* SceneCreator::createScene()
         }
 
         //create a rectangle with which we visualize the duration of the employee’s vacation
-        QGraphicsRectItem *itemRect = new QGraphicsRectItem(vacationStart.dayOfYear() * m_scale
+        QGraphicsRectItem* itemRect = new QGraphicsRectItem(vacationStart.dayOfYear() * m_scale
                                                         , m_currentNumberRows * m_heightRow + m_heightRow / 2
                                                         , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
                                                         , m_heightRow);
@@ -76,35 +76,35 @@ QGraphicsScene* SceneCreator::createScene()
                    , (m_currentNumberRows + 1) * m_heightRow
                    , QPen(Qt::black));
 
-    scene->addLine(m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
+    scene->addLine(m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
                    , 0
-                   , m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
+                   , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
                    , (m_currentNumberRows + 1) * m_heightRow
                    , QPen(Qt::black));
 
 
-    for (int i = 0; i < m_mounthCount; ++i)
+    for (int i = 0; i < m_monthsNumber; ++i)
     {
-        QGraphicsRectItem *itemRect = nullptr;
+        QGraphicsRectItem* itemRect = nullptr;
 
         auto selectedBrush = m_standards[i].currentNumber > m_standards[i].standardNumber
                              ? QBrush(Qt::red)
                              : QBrush(Qt::green);
 
-        itemRect = scene->addRect(m_dayOfMounth * m_scale * i
+        itemRect = scene->addRect(m_dayOfMonth * m_scale * i
                                   , (m_currentNumberRows + 1) * m_heightRow
-                                  , m_dayOfMounth * m_scale
+                                  , m_dayOfMonth * m_scale
                                   , m_heightRow
                                   , QPen(Qt::black)
                                   , selectedBrush);
 
         itemRect->setPos(m_widthEmployeeName, 0);
-        addTextToRect(scene, itemRect, m_mounth[i]);
+        addTextToRect(scene, itemRect, m_months[i]);
     }
 
     scene->setSceneRect(0
                         , 0
-                        , m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
+                        , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
                         , m_heightRow * m_currentNumberRows + m_indentation);
 
     return scene;
@@ -113,8 +113,8 @@ QGraphicsScene* SceneCreator::createScene()
 void SceneCreator::fillStandardsVec()
 {
     while(m_stardardsQuery->next())
-        for(int i = 0; i < m_mounthCount; ++i)
-            if (m_stardardsQuery->value(0).toString() == m_mounth[i])
+        for(int i = 0; i < m_monthsNumber; ++i)
+            if (m_stardardsQuery->value(0).toString() == m_months[i])
             {
                 m_standards[i].standardNumber = m_stardardsQuery->value(1).toInt();
                 break;
@@ -125,7 +125,7 @@ void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemR
 {
     qreal x1Rect, y1Rect, widthRect, heightRect;
 
-    QGraphicsTextItem *textItem = scene->addText(text);
+    QGraphicsTextItem* textItem = scene->addText(text);
     itemRect->rect().getRect(&x1Rect, &y1Rect, &widthRect, &heightRect);
     textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);

@@ -47,10 +47,12 @@ void MainWindow::setupUI()
 
     m_mainScene = m_sceneCreator->createScene();
 
-    m_mainScene ? LOGE("Error creating scene") : LOGD("Scene created successfully");
+    m_mainScene ? LOGD("Scene created successfully") : LOGE("Error creating scene");
 
     m_ui->mainView->setAlignment(Qt::AlignTop);
     m_ui->mainView->setScene(m_mainScene);
+
+    showMaximized();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -58,8 +60,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     m_ui->mainView->resize(event->size());
     m_ui->mainView->fitInView(QRectF(QPointF(0, 0), event->size()));
 
-    m_ui->mainView->scale(width() / m_mainScene->width(),
-                          width() / m_mainScene->width());
+    m_ui->mainView->scale(width() * 0.95 / m_mainScene->width(),
+                          width() * 0.95 / m_mainScene->width());
 
     update();
 

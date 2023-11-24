@@ -14,18 +14,18 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
     void setupUI();
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
-    SceneCreator    *m_sceneCreator;
-    IDBController   *m_dbController;
-    QGraphicsScene  *m_mainScene;
-    Ui::MainWindow  *m_ui;
+    SceneCreator*   m_sceneCreator;
+    IDBController*  m_dbController;
+    QGraphicsScene* m_mainScene;
+    Ui::MainWindow* m_ui;
 };
 #endif // MAINWINDOW_H

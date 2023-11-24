@@ -6,7 +6,7 @@
 #include <QGraphicsScene>
 #include <QtSql/QSqlQuery>
 
-#define NUMBERMOUNTHS 12
+#define NUMBEROFMONTHS 12
 
 enum QueryCode
 {
@@ -21,7 +21,7 @@ ostreamT& operator << (ostreamT& out, const QueryCode& t)
     switch(t) {
     case EMPLOYEES: return (out << "EMPLOYEES");
     case STANDARDS: return (out << "STANDARDS");
-    case LAST: return (out << "LAST");
+    case LAST:      return (out << "LAST");
     }
     return (out);
 }
@@ -48,20 +48,20 @@ private:
         int standardNumber = 0;
         int currentNumber  = 0;
 
-    } m_standards[NUMBERMOUNTHS];
+    } m_standards[NUMBEROFMONTHS];
 
     int m_currentNumberRows                = 0;
 
     static const int m_scale               = 2;
     static const int m_heightRow           = 14;
 
-    static const int m_mounthCount         = 12;
-    static const int m_dayOfMounth         = 30;
+    static const int m_monthsNumber        = 12;
+    static const int m_dayOfMonth          = 30;
 
     static const int m_indentation         = 50;
     static const int m_widthEmployeeName   = 200;
 
-    const char* m_mounth[NUMBERMOUNTHS] = {"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ",
+    const char* m_months[NUMBEROFMONTHS] = {"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ",
                                            "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ",
                                            "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};
 
