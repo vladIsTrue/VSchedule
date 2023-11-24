@@ -29,7 +29,16 @@ enum QueryCode
 };
 
 template<typename ostreamT>
-ostreamT& operator << (ostreamT& out, const QueryCode& t);
+ostreamT& operator << (ostreamT& out, const QueryCode& code)
+{
+    switch(code)
+    {
+        case EMPLOYEES: return (out << "EMPLOYEES");
+        case STANDARDS: return (out << "STANDARDS");
+        case LAST:      return (out << "LAST");
+    }
+    return (out);
+}
 
 class SceneCreator : public QObject
 {
@@ -95,18 +104,20 @@ private:
 
     } m_standards[NUMBEROFMONTHS]; /**< The standards array. */
 
-    int m_currentNumberRows; /**< The current number of rows. */
+    int m_currentNumberRows                 = 0;    /**< The current number of rows. */
 
-    static const int m_scale;               /**< The scale. */
-    static const int m_heightRow;           /**< The height of a row. */
+    static const int m_scale                = 2;    /**< The scale. */
+    static const int m_heightRow            = 14;   /**< The height of a row. */
 
-    static const int m_monthsNumber;        /**< The number of months. */
-    static const int m_dayOfMonth;          /**< The number of days in a month. */
+    static const int m_monthsNumber         = 12;   /**< The number of months. */
+    static const int m_dayOfMonth           = 30;    /**< The number of days in a month. */
 
-    static const int m_indentation;         /**< The indentation. */
-    static const int m_widthEmployeeName;   /**< The width of the employee name. */
+    static const int m_indentation          = 50;   /**< The indentation. */
+    static const int m_widthEmployeeName    = 200;  /**< The width of the employee name. */
 
-    const char* m_months[NUMBEROFMONTHS];  /**< The months array. */
+    const char* m_months[NUMBEROFMONTHS] = {"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ",
+                                           "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ",
+                                           "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};  /**< The months array. */
 };
 
 #endif //SCENE_H

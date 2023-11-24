@@ -10,7 +10,10 @@ SceneCreator::SceneCreator()
 {}
 
 SceneCreator::~SceneCreator()
-{}
+{
+    delete m_employeesQuery;
+    delete m_stardardsQuery;
+}
 
 QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
 {
@@ -54,7 +57,6 @@ QGraphicsScene* SceneCreator::createScene()
                                                     , QBrush(Qt::yellow));
 
         itemRect->setPos(m_widthEmployeeName, 0);
-        scene->addItem(itemRect);
 
         //place the number of employee vacation days in the center of the rectangle
         addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));

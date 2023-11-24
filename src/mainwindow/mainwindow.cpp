@@ -21,7 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{}
+{
+    delete m_ui;
+    delete m_mainScene;
+    delete m_sceneCreator;
+    delete m_dbController;
+}
 
 void MainWindow::setupUI()
 {
