@@ -21,7 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{}
+{
+    delete m_ui;
+    delete m_mainScene;
+    delete m_sceneCreator;
+    delete m_dbController;
+}
 
 void MainWindow::setupUI()
 {
@@ -39,7 +44,7 @@ void MainWindow::setupUI()
 
     resultSelect =
         m_sceneCreator->setQueryFromDB("SELECT mounth, numberofemployees FROM standards"
-                                      , QueryCode::STANDARDS);
+                                       , QueryCode::STANDARDS);
 
     resultSelect.isValid() ? LOGE(resultSelect) : LOGD("Selection from "
                                                        << QueryCode::STANDARDS
@@ -67,4 +72,3 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     QWidget::resizeEvent(event);
 }
-
