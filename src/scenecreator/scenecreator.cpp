@@ -3,7 +3,6 @@
 #include <QDate>
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
-#include <numeric>
 
 SceneCreator::SceneCreator()
     : m_employeesQuery(nullptr)
