@@ -106,7 +106,7 @@ QGraphicsScene* SceneCreator::createScene()
 
     scene->setSceneRect(0
                         , 0
-                        , m_daysInYear * m_scale + m_widthEmployeeName
+                        , m_widthEmployeeName + m_daysInYear * m_scale
                         , m_heightRow * m_currentNumberRows + m_indentation);
 
     return scene;
