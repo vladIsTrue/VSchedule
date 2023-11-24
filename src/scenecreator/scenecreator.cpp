@@ -22,6 +22,8 @@ QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
     case QueryCode::STANDARDS:
         m_stardardsQuery = new QSqlQuery(query);
         return m_stardardsQuery->lastError();
+    default:
+        return QSqlError("invalid code");
     }
 }
 
@@ -29,7 +31,7 @@ QGraphicsScene* SceneCreator::createScene()
 {
     QGraphicsScene * scene = new QGraphicsScene();
 
-    fillStandardsVec(); // refactor this
+    fillStandardsVec();
 
     while(m_employeesQuery->next())
     {
@@ -45,7 +47,7 @@ QGraphicsScene* SceneCreator::createScene()
 
         //create a rectangle with which we visualize the duration of the employee’s vacation
         QGraphicsRectItem *itemRect = new QGraphicsRectItem(vacationStart.dayOfYear() * m_scale
-                                                        , m_currentRow * m_heightRow + m_heightRow / 2
+                                                        , m_currentNumberRows * m_heightRow + m_heightRow / 2
                                                         , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
                                                         , m_heightRow);
         itemRect->setPos(m_widthEmployeeName, 0);
@@ -56,28 +58,28 @@ QGraphicsScene* SceneCreator::createScene()
 
         //create a value storing the employee's name
         QGraphicsTextItem *nameEmployeeItem = new QGraphicsTextItem(name);
-        nameEmployeeItem->setPos(0, m_currentRow * m_heightRow);
+        nameEmployeeItem->setPos(0, m_currentNumberRows * m_heightRow);
         scene->addItem(nameEmployeeItem);
 
         QString toolTip = QString("Начало: %1\nКонец: %2")
-                              .arg(vacationStart.toString())
-                              .arg(vacationEnd.toString());
+                              .arg(QLocale::system().toString(vacationStart))
+                              .arg(QLocale::system().toString(vacationEnd));
 
         itemRect->setToolTip(toolTip);
 
-        ++m_currentRow;
+        ++m_currentNumberRows;
     }
 
     scene->addLine(m_widthEmployeeName
                    , 0
                    , m_widthEmployeeName
-                   , (m_currentRow + 1) * m_heightRow
+                   , (m_currentNumberRows + 1) * m_heightRow
                    , QPen(Qt::black));
 
     scene->addLine(m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
                    , 0
                    , m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
-                   , (m_currentRow + 1) * m_heightRow
+                   , (m_currentNumberRows + 1) * m_heightRow
                    , QPen(Qt::black));
 
 
@@ -90,7 +92,7 @@ QGraphicsScene* SceneCreator::createScene()
                              : QBrush(Qt::green);
 
         itemRect = scene->addRect(m_dayOfMounth * m_scale * i
-                                  , (m_currentRow + 1) * m_heightRow
+                                  , (m_currentNumberRows + 1) * m_heightRow
                                   , m_dayOfMounth * m_scale
                                   , m_heightRow
                                   , QPen(Qt::black)
@@ -99,6 +101,11 @@ QGraphicsScene* SceneCreator::createScene()
         itemRect->setPos(m_widthEmployeeName, 0);
         addTextToRect(scene, itemRect, m_mounth[i]);
     }
+
+    scene->setSceneRect(0
+                        , 0
+                        , m_dayOfMounth * m_mounthCount * m_scale + m_widthEmployeeName
+                        , m_heightRow * m_currentNumberRows + m_indentation);
 
     return scene;
 }
