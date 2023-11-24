@@ -46,15 +46,26 @@ QGraphicsScene* SceneCreator::createScene()
         }
 
         //create a rectangle with which we visualize the duration of the employee’s vacation
-        QGraphicsRectItem* itemRect = new QGraphicsRectItem(vacationStart.dayOfYear() * m_scale
-                                                        , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                                                        , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
-                                                        , m_heightRow);
+        QGraphicsRectItem* itemRect = scene->addRect(vacationStart.dayOfYear() * m_scale
+                                                    , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                                                    , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
+                                                    , m_heightRow
+                                                    , QPen(Qt::black)
+                                                    , QBrush(Qt::yellow));
+
         itemRect->setPos(m_widthEmployeeName, 0);
         scene->addItem(itemRect);
 
         //place the number of employee vacation days in the center of the rectangle
         addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
+
+        //////////////////////////////////////////////////////////////////////////////
+        scene->addLine(0
+                       , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                       , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
+                       , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                       , QPen(Qt::black));
+        //////////////////////////////////////////////////////////////////////////////
 
         //create a value storing the employee's name
         QGraphicsTextItem *nameEmployeeItem = new QGraphicsTextItem(name);
@@ -70,18 +81,13 @@ QGraphicsScene* SceneCreator::createScene()
         ++m_currentNumberRows;
     }
 
-    scene->addLine(m_widthEmployeeName
-                   , 0
-                   , m_widthEmployeeName
-                   , (m_currentNumberRows + 1) * m_heightRow
-                   , QPen(Qt::black));
-
-    scene->addLine(m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                   , 0
+    //////////////////////////////////////////////////////////////////////////////
+    scene->addLine(0
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
                    , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                   , (m_currentNumberRows + 1) * m_heightRow
+                   , m_currentNumberRows * m_heightRow + m_heightRow / 2
                    , QPen(Qt::black));
-
+    //////////////////////////////////////////////////////////////////////////////
 
     for (int i = 0; i < m_monthsNumber; ++i)
     {
@@ -92,11 +98,19 @@ QGraphicsScene* SceneCreator::createScene()
                              : QBrush(Qt::green);
 
         itemRect = scene->addRect(m_dayOfMonth * m_scale * i
-                                  , (m_currentNumberRows + 1) * m_heightRow
+                                  , (m_currentNumberRows + 0.5) * m_heightRow
                                   , m_dayOfMonth * m_scale
                                   , m_heightRow
                                   , QPen(Qt::black)
                                   , selectedBrush);
+
+        /////////////////////////////////////////////////////////////////
+        scene->addLine(m_widthEmployeeName + m_dayOfMonth * i * m_scale
+                       , 0
+                       , m_widthEmployeeName + m_dayOfMonth * i * m_scale
+                       , (m_currentNumberRows + 1) * m_heightRow
+                       , QPen(Qt::black));
+        /////////////////////////////////////////////////////////////////
 
         itemRect->setPos(m_widthEmployeeName, 0);
         addTextToRect(scene, itemRect, m_months[i]);
