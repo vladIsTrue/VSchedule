@@ -34,11 +34,14 @@ endif()
 
 add_dependencies(mainwindow dbcontroller)
 add_dependencies(mainwindow scenecreator)
+add_dependencies(mainwindow utils)
 
 target_link_libraries(mainwindow PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(mainwindow PRIVATE Qt6::Sql)
 target_link_libraries(mainwindow PRIVATE dbcontroller)
 target_link_libraries(mainwindow PRIVATE scenecreator)
+target_link_libraries(mainwindow PRIVATE utils)
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

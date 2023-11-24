@@ -23,11 +23,9 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-
-    QGraphicsScene *mainScene;
-
-    IDBController   *m_dbController;
     SceneCreator    *m_sceneCreator;
+    IDBController   *m_dbController;
+    QGraphicsScene  *m_mainScene;
     Ui::MainWindow  *m_ui;
 };
 #endif // MAINWINDOW_H
