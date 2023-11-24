@@ -4,11 +4,11 @@ and color indication of calendar months for which the specified limit on the num
 per month (standard) has been exceeded.
 
 ## Requirements
--CMake 3.11 or better
--A C++17 compatible compiler
--Qt6 library
--Git
--Doxygen (optional)
+-CMake 3.11 or better;
+-A C++17 compatible compiler;
+-Qt6 library;
+-Git;
+-Doxygen (optional);
 
 ## Build
 -To configure:
