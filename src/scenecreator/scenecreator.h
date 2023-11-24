@@ -8,6 +8,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <QPair>
 #include <QVector>
 #include <QSqlError>
 #include <QGraphicsScene>
@@ -94,6 +95,12 @@ private:
      */
     void drawLine(QGraphicsScene* scene);
 
+    /**
+     * @brief Sums up the days in a month multiplied by m_scale.
+     * @param end The index od end.
+     */
+    int accumulateDays(int end);
+
     QSqlQuery* m_employeesQuery; /**< The employees query. */
     QSqlQuery* m_stardardsQuery; /**< The standards query. */
 
@@ -109,15 +116,26 @@ private:
     static const int m_scale                = 2;    /**< The scale. */
     static const int m_heightRow            = 14;   /**< The height of a row. */
 
-    static const int m_monthsNumber         = 12;   /**< The number of months. */
-    static const int m_dayOfMonth           = 30;    /**< The number of days in a month. */
+    static const int m_daysInYear           = 365;    /**< The number of days in a year. */
 
     static const int m_indentation          = 50;   /**< The indentation. */
     static const int m_widthEmployeeName    = 200;  /**< The width of the employee name. */
 
-    const char* m_months[NUMBEROFMONTHS] = {"ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ",
-                                           "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ",
-                                           "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"};  /**< The months array. */
+    const QPair<const char*, int> m_months[NUMBEROFMONTHS] =
+    {
+          qMakePair("ЯНВАРЬ", 31)
+        , qMakePair("ФЕВРАЛЬ", 28)
+        , qMakePair("МАРТ", 31)
+        , qMakePair("АПРЕЛЬ", 30)
+        , qMakePair("МАЙ", 31)
+        , qMakePair("ИЮНЬ", 30)
+        , qMakePair("ИЮЛЬ", 31)
+        , qMakePair("АВГУСТ", 31)
+        , qMakePair("СЕНТЯБРЬ", 30)
+        , qMakePair("ОКТЯБРЬ", 31)
+        , qMakePair("НОЯБРЬ", 30)
+        , qMakePair("ДЕКАБРЬ", 31)
+    }; /**< The months array. */
 };
 
 #endif //SCENE_H
