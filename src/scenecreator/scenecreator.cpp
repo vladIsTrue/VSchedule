@@ -11,7 +11,10 @@ SceneCreator::SceneCreator()
 {}
 
 SceneCreator::~SceneCreator()
-{}
+{
+    delete m_employeesQuery;
+    delete m_stardardsQuery;
+}
 
 QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
 {
@@ -47,15 +50,19 @@ QGraphicsScene* SceneCreator::createScene()
         }
 
         //create a rectangle with which we visualize the duration of the employee’s vacation
-        QGraphicsRectItem* itemRect = new QGraphicsRectItem(vacationStart.dayOfYear() * m_scale
-                                                        , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                                                        , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
-                                                        , m_heightRow);
+        QGraphicsRectItem* itemRect = scene->addRect(vacationStart.dayOfYear() * m_scale
+                                                     , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                                                     , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
+                                                     , m_heightRow
+                                                     , QPen(Qt::black)
+                                                     , QBrush(Qt::yellow));
+
         itemRect->setPos(m_widthEmployeeName, 0);
-        scene->addItem(itemRect);
 
         //place the number of employee vacation days in the center of the rectangle
         addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
+
+        drawLine(scene);
 
         //create a value storing the employee's name
         QGraphicsTextItem *nameEmployeeItem = new QGraphicsTextItem(name);
@@ -71,49 +78,29 @@ QGraphicsScene* SceneCreator::createScene()
         ++m_currentNumberRows;
     }
 
-    scene->addLine(m_widthEmployeeName
-                   , 0
-                   , m_widthEmployeeName
-                   , (m_currentNumberRows + 1) * m_heightRow
-                   , QPen(Qt::black));
-
-    scene->addLine(m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                   , 0
-                   , m_dayOfMonth * m_monthsNumber * m_scale + m_widthEmployeeName
-                   , (m_currentNumberRows + 1) * m_heightRow
-                   , QPen(Qt::black));
-
+    drawLine(scene);
 
     for (int i = 0; i < NUMBEROFMONTHS; ++i)
     {
         QGraphicsRectItem* itemRect = nullptr;
 
         auto selectedBrush = m_standards[i].currentNumber > m_standards[i].standardNumber
-                             ? QBrush(Qt::red)
-                             : QBrush(Qt::green);
+                                 ? QBrush(Qt::red)
+                                 : QBrush(Qt::green);
 
-<<<<<<< HEAD
-        itemRect = scene->addRect(m_dayOfMonth * m_scale * i
-                                  , (m_currentNumberRows + 1) * m_heightRow
-                                  , m_dayOfMonth * m_scale
-=======
         itemRect = scene->addRect(accumulateDays(i)
                                   , (m_currentNumberRows + 0.5) * m_heightRow
                                   , m_months[i].second * m_scale
->>>>>>> 797ea13 (months now have the correct number of days)
                                   , m_heightRow
                                   , QPen(Qt::black)
                                   , selectedBrush);
 
-<<<<<<< HEAD
-=======
         scene->addLine(m_widthEmployeeName + accumulateDays(i)
                        , 0
                        , m_widthEmployeeName + accumulateDays(i)
                        , (m_currentNumberRows + 1) * m_heightRow
                        , QPen(Qt::black));
 
->>>>>>> 797ea13 (months now have the correct number of days)
         itemRect->setPos(m_widthEmployeeName, 0);
         addTextToRect(scene, itemRect, m_months[i].first);
     }
@@ -146,14 +133,12 @@ void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemR
     textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);
 }
-<<<<<<< HEAD
-=======
 
 void SceneCreator::drawLine(QGraphicsScene* scene)
 {
     scene->addLine(0
                    , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                   , 365 * m_scale + m_widthEmployeeName
+                   , m_daysInYear * m_scale + m_widthEmployeeName
                    , m_currentNumberRows * m_heightRow + m_heightRow / 2
                    , QPen(Qt::black));
 }
@@ -168,4 +153,3 @@ int SceneCreator::accumulateDays(int end)
 
     return sum;
 }
->>>>>>> 797ea13 (months now have the correct number of days)
