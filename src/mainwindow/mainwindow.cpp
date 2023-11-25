@@ -43,7 +43,7 @@ void MainWindow::setupUI()
                                                        << " table completed successfully");
 
     resultSelect =
-        m_sceneCreator->setQueryFromDB("SELECT mounth, numberofemployees FROM standards"
+        m_sceneCreator->setQueryFromDB("SELECT month_name, numberofemployees FROM standards"
                                        , QueryCode::STANDARDS);
 
     resultSelect.isValid() ? LOGE(resultSelect) : LOGD("Selection from "
