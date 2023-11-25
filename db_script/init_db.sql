@@ -38,7 +38,7 @@ INSERT INTO employees (name, startofvacation, endofvacation) VALUES ('Ивано
 INSERT INTO employees (name, startofvacation, endofvacation) VALUES ('Иванов Александр Иванович', '2023-03-05','2023-03-25'); 
 
 INSERT INTO standards (month_name, numberofemployees) VALUES ('ЯНВАРЬ', 3);
-INSERT INTO standards (month_name, numberofemployees) VALUES ('фЕВРАЛЬ', 4);
+INSERT INTO standards (month_name, numberofemployees) VALUES ('ФЕВРАЛЬ', 4);
 INSERT INTO standards (month_name, numberofemployees) VALUES ('МАРТ', 4);
 INSERT INTO standards (month_name, numberofemployees) VALUES ('АПРЕЛЬ', 5);
 INSERT INTO standards (month_name, numberofemployees) VALUES ('МАЙ', 4);
