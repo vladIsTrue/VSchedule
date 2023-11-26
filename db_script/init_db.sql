@@ -52,4 +52,6 @@ INSERT INTO standards (month_name, numberofemployees) VALUES ('ДЕКАБРЬ', 
 
 CREATE ROLE username LOGIN PASSWORD 'username';
 
-GRAND ALL PRIVILEGES ON DATABASE vacation_data TO username;
+GRANT CONNECT ON DATABASE vacation_data TO username;
+GRANT USAGE ON SCHEMA public TO username;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO username;
