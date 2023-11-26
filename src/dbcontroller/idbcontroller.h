@@ -15,17 +15,6 @@ class IDBController
 {
 public:
     /**
-     * @brief IDBController constructor.
-     */
-    explicit IDBController()
-    {}
-
-    /**
-     * @brief IDBController destructor.
-     */
-    virtual ~IDBController() = default;
-
-    /**
      * @brief Connect to the database.
      * @return True if the connection was successful, false otherwise.
      */

@@ -39,18 +39,18 @@ public:
      * @brief Connect to the PostgreSQL database.
      * @return True if the connection was successful, false otherwise.
      */
-    bool connectToDB();
+    bool connectToDB() override;
 
     /**
      * @brief Disconnect from the PostgreSQL database.
      */
-    void disconnectFromDB();
+    void disconnectFromDB() override;
 
     /**
      * @brief Check the connection to the PostgreSQL database.
      * @return True if the connection is active, false otherwise.
      */
-    bool checkConnection();
+    bool checkConnection() override;
 
 private:
     QString m_dbDriver            {"QPSQL"};
