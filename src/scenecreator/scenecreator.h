@@ -14,8 +14,6 @@
 #include <QGraphicsScene>
 #include <QtSql/QSqlQuery>
 
-#define NUMBEROFMONTHS 12
-
 /**
  * @brief The QueryCode enum represents different types of queries.
  *
@@ -30,7 +28,7 @@ enum QueryCode
 };
 
 template<typename ostreamT>
-ostreamT& operator << (ostreamT& out, const QueryCode& code)
+ostreamT& operator<<(ostreamT& out, const QueryCode& code)
 {
     switch(code)
     {
@@ -41,9 +39,8 @@ ostreamT& operator << (ostreamT& out, const QueryCode& code)
     return (out);
 }
 
-class SceneCreator : public QObject
+class SceneCreator
 {
-    Q_OBJECT
 public:
     /**
      * @brief SceneCreator constructor.
@@ -63,7 +60,7 @@ public:
      *
      * This function executes a query and stores the result in a variable that corresponds to code
      */
-    QSqlError setQueryFromDB(QString query, QueryCode code);
+    QSqlError setQueryFromDB(const QString& query, const QueryCode code);
 
     /**
      * @brief Create a graphics scene.
@@ -76,6 +73,37 @@ public:
     QGraphicsScene* createScene();
 
 private:
+    static const int m_scale             = 2;    /**< The scale. */
+    static const int m_heightRow         = 14;   /**< The height of a row. */
+    static const int m_numberofmounth    = 12;   /**< The number of mounth. */
+
+    static const int m_daysInYear        = 365;  /**< The number of days in a year. */
+
+    static const int m_indentation       = 50;   /**< The indentation. */
+    static const int m_widthEmployeeName = 200;  /**< The width of the employee name. */
+
+    struct
+    {
+        int standardNumber = 0; /**< The standard number. */
+        int currentNumber  = 0; /**< The current number. */
+    } m_standards[m_numberofmounth]; /**< The standards array. */
+
+    const QPair<const char*, int> m_months[m_numberofmounth] =
+    {
+          qMakePair("ЯНВАРЬ",   31)
+        , qMakePair("ФЕВРАЛЬ",  28)
+        , qMakePair("МАРТ",     31)
+        , qMakePair("АПРЕЛЬ",   30)
+        , qMakePair("МАЙ",      31)
+        , qMakePair("ИЮНЬ",     30)
+        , qMakePair("ИЮЛЬ",     31)
+        , qMakePair("АВГУСТ",   31)
+        , qMakePair("СЕНТЯБРЬ", 30)
+        , qMakePair("ОКТЯБРЬ",  31)
+        , qMakePair("НОЯБРЬ",   30)
+        , qMakePair("ДЕКАБРЬ",  31)
+    }; /**< The months array. */
+
     /**
      * @brief Fill the standards vector.
      */
@@ -101,41 +129,10 @@ private:
      */
     int accumulateDays(int end);
 
+    int m_currentNumberRows = 0; /**< The current number of rows. */
+
     QSqlQuery* m_employeesQuery; /**< The employees query. */
     QSqlQuery* m_stardardsQuery; /**< The standards query. */
-
-    struct
-    {
-        int standardNumber = 0; /**< The standard number. */
-        int currentNumber  = 0; /**< The current number. */
-
-    } m_standards[NUMBEROFMONTHS]; /**< The standards array. */
-
-    int m_currentNumberRows                 = 0;    /**< The current number of rows. */
-
-    static const int m_scale                = 2;    /**< The scale. */
-    static const int m_heightRow            = 14;   /**< The height of a row. */
-
-    static const int m_daysInYear           = 365;  /**< The number of days in a year. */
-
-    static const int m_indentation          = 50;   /**< The indentation. */
-    static const int m_widthEmployeeName    = 200;  /**< The width of the employee name. */
-
-    const QPair<const char*, int> m_months[NUMBEROFMONTHS] =
-    {
-          qMakePair("ЯНВАРЬ",   31)
-        , qMakePair("ФЕВРАЛЬ",  28)
-        , qMakePair("МАРТ",     31)
-        , qMakePair("АПРЕЛЬ",   30)
-        , qMakePair("МАЙ",      31)
-        , qMakePair("ИЮНЬ",     30)
-        , qMakePair("ИЮЛЬ",     31)
-        , qMakePair("АВГУСТ",   31)
-        , qMakePair("СЕНТЯБРЬ", 30)
-        , qMakePair("ОКТЯБРЬ",  31)
-        , qMakePair("НОЯБРЬ",   30)
-        , qMakePair("ДЕКАБРЬ",  31)
-    }; /**< The months array. */
 };
 
 #endif //SCENE_H

@@ -15,7 +15,7 @@ SceneCreator::~SceneCreator()
     delete m_stardardsQuery;
 }
 
-QSqlError SceneCreator::setQueryFromDB(QString query, QueryCode code)
+QSqlError SceneCreator::setQueryFromDB(const QString& query, const QueryCode code)
 {
     switch (code)
     {
@@ -79,7 +79,7 @@ QGraphicsScene* SceneCreator::createScene()
 
     drawLine(scene);
 
-    for (int i = 0; i < NUMBEROFMONTHS; ++i)
+    for (int i = 0; i < m_numberofmounth; ++i)
     {
         QGraphicsRectItem* itemRect = nullptr;
 
@@ -115,7 +115,7 @@ QGraphicsScene* SceneCreator::createScene()
 void SceneCreator::fillStandardsVec()
 {
     while(m_stardardsQuery->next())
-        for(int i = 0; i < NUMBEROFMONTHS; ++i)
+        for(int i = 0; i < m_numberofmounth; ++i)
             if (m_stardardsQuery->value(0).toString() == m_months[i].first)
             {
                 m_standards[i].standardNumber = m_stardardsQuery->value(1).toInt();

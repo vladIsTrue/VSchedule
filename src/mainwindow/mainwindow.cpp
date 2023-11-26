@@ -7,10 +7,10 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , m_mainScene(nullptr)
     , m_dbController(new PgDBController())
     , m_sceneCreator(new SceneCreator())
     , m_ui(new Ui::MainWindow)
-    , m_mainScene(nullptr)
 {
     if (m_dbController->connectToDB())
         LOGD("Database is open");
