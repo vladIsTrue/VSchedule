@@ -11,6 +11,7 @@ add_library(dbcontroller
     )
 
 target_link_libraries(dbcontroller PRIVATE Qt6::Sql)
+target_link_libraries(dbcontroller PRIVATE PostgreSQL::PostgreSQL)
 set_target_properties(dbcontroller PROPERTIES LINKER_LANGUAGE CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

@@ -55,7 +55,7 @@ public:
 private:
     QString m_dbDriver            {"QPSQL"};
     QString m_dbHost              {"localhost"};
-    QString m_dbName              {"vacation_data"};
+    QString m_dbName              {"vacation"};
     QString m_dbUserName          {"username"};
     QString m_dbPassword          {"username"};
     QSqlDatabase m_db             {};

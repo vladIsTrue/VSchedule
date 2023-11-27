@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 project(vacation_schedule VERSION 0.1 LANGUAGES CXX)
 
@@ -34,6 +34,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     message(STATUS "Doxygen not found, not building docs")
   endif()
 endif()
+
+find_package(PostgreSQL 15.3 REQUIRED)
 
 add_subdirectory(src/mainwindow)
 add_subdirectory(src/dbcontroller)
