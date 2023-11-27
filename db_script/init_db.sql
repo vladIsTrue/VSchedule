@@ -1,9 +1,9 @@
-CREATE DATABASE vacation_data;
+CREATE DATABASE vacation;
 
-\c vacation_data
+\c vacation;
 
 CREATE TABLE employees (
-  id int NOT NULL AUTO_INCREMENT,
+  id SERIAL PRIMARY KEY,
   name varchar(90),
   startofvacation DATE,
   endofvacation DATE
@@ -52,6 +52,6 @@ INSERT INTO standards (month_name, numberofemployees) VALUES ('ДЕКАБРЬ', 
 
 CREATE ROLE username LOGIN PASSWORD 'username';
 
-GRANT CONNECT ON DATABASE vacation_data TO username;
+GRANT CONNECT ON DATABASE vacation TO username;
 GRANT USAGE ON SCHEMA public TO username;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO username;
