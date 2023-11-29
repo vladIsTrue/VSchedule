@@ -82,27 +82,29 @@ private:
     static const int m_indentation       = 50;   /**< The indentation. */
     static const int m_widthEmployeeName = 200;  /**< The width of the employee name. */
 
-    struct
+    struct Standard
     {
         int standardNumber = 0; /**< The standard number. */
         int currentNumber  = 0; /**< The current number. */
-    } m_standards[m_numberofmounth]; /**< The standards array. */
+    };
 
-    const QPair<const char*, int> m_months[m_numberofmounth] =
+    QVector<Standard> m_standards{m_numberofmounth};
+
+    QVector<QPair<QString, int>> m_months
     {
-          qMakePair("ЯНВАРЬ",   31)
-        , qMakePair("ФЕВРАЛЬ",  28)
-        , qMakePair("МАРТ",     31)
-        , qMakePair("АПРЕЛЬ",   30)
-        , qMakePair("МАЙ",      31)
-        , qMakePair("ИЮНЬ",     30)
-        , qMakePair("ИЮЛЬ",     31)
-        , qMakePair("АВГУСТ",   31)
-        , qMakePair("СЕНТЯБРЬ", 30)
-        , qMakePair("ОКТЯБРЬ",  31)
-        , qMakePair("НОЯБРЬ",   30)
-        , qMakePair("ДЕКАБРЬ",  31)
-    }; /**< The months array. */
+          qMakePair(QString("ЯНВАРЬ"),   31)
+        , qMakePair(QString("ФЕВРАЛЬ"),  28)
+        , qMakePair(QString("МАРТ"),     31)
+        , qMakePair(QString("АПРЕЛЬ"),   30)
+        , qMakePair(QString("МАЙ"),      31)
+        , qMakePair(QString("ИЮНЬ"),     30)
+        , qMakePair(QString("ИЮЛЬ"),     31)
+        , qMakePair(QString("АВГУСТ"),   31)
+        , qMakePair(QString("СЕНТЯБРЬ"), 30)
+        , qMakePair(QString("ОКТЯБРЬ"),  31)
+        , qMakePair(QString("НОЯБРЬ"),   30)
+        , qMakePair(QString("ДЕКАБРЬ"),  31)
+    };  /**< The months vector. */
 
     /**
      * @brief Fill the standards vector.

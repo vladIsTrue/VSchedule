@@ -1,4 +1,4 @@
-find_package(Qt6 REQUIRED COMPONENTS Sql)
+find_package(Qt5 REQUIRED COMPONENTS Sql)
 
 set(SOURCES
     idbcontroller.h
@@ -10,7 +10,7 @@ add_library(dbcontroller
     ${SOURCES}
     )
 
-target_link_libraries(dbcontroller PRIVATE Qt6::Sql)
+target_link_libraries(dbcontroller PRIVATE Qt5::Sql)
 target_link_libraries(dbcontroller PRIVATE PostgreSQL::PostgreSQL)
 set_target_properties(dbcontroller PROPERTIES LINKER_LANGUAGE CXX)
 
