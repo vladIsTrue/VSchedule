@@ -131,6 +131,29 @@ private:
      */
     int accumulateDays(int end);
 
+     /**
+     * @brief Adds a row to the scene based on the data from the employeesQuery.
+     *
+     * This function adds a row to the scene for each unique employee name in the employeesQuery.
+     * The row contains the employee's name and a rectangle representing their vacation duration.
+     * The rectangle's tooltip displays the start and end dates of the vacation.
+     *
+     * @param scene The scene to which the row is added.
+     * @param employeesQuery The query containing the employee data.
+     * @param oldName A reference to the last added employee name.
+     */
+    void addRow(QGraphicsScene* scene, QSqlQuery* employeesQuery, QString& oldName);
+
+    /**
+     * @brief Adds months to the scene.
+     *
+     * This function adds a row to the scene for each month in the year.
+     * The row contains a text item representing the month's name.
+     *
+     * @param scene The scene to which the months are added.
+     */
+    void addMonths(QGraphicsScene* scene);
+
     int m_currentNumberRows = 0; /**< The current number of rows. */
 
     QSqlQuery* m_employeesQuery; /**< The employees query. */

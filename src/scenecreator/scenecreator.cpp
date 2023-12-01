@@ -34,75 +34,25 @@ QGraphicsScene* SceneCreator::createScene()
 {
     QGraphicsScene* scene = new QGraphicsScene();
 
+    QString oldName{""};
+
     fillStandardsVec();
 
     while(m_employeesQuery->next())
     {
-        QString name        = m_employeesQuery->value(0).toString();
-        QDate vacationStart = m_employeesQuery->value(1).toDate();
-        QDate vacationEnd   = m_employeesQuery->value(2).toDate();
-
-        m_standards[vacationStart.month() - 1].currentNumber++;
-        if (vacationEnd.month() != vacationStart.month())
+        m_standards[m_employeesQuery->value(1).toDate().month() - 1].currentNumber++;
+        if (m_employeesQuery->value(2).toDate().month() != m_employeesQuery->value(1).toDate().month())
         {
-            m_standards[vacationEnd.month() - 1].currentNumber++;
+            m_standards[m_employeesQuery->value(2).toDate().month() - 1].currentNumber++;
         }
 
-        //create a rectangle with which we visualize the duration of the employee’s vacation
-        QGraphicsRectItem* itemRect = scene->addRect(vacationStart.dayOfYear() * m_scale
-                                                     , m_currentNumberRows * m_heightRow + m_heightRow / 2
-                                                     , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
-                                                     , m_heightRow
-                                                     , QPen(Qt::black)
-                                                     , QBrush(Qt::yellow));
-
-        itemRect->setPos(m_widthEmployeeName, 0);
-
-        //place the number of employee vacation days in the center of the rectangle
-        addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
-
-        drawLine(scene);
-
-        //create a value storing the employee's name
-        QGraphicsTextItem *nameEmployeeItem = new QGraphicsTextItem(name);
-        nameEmployeeItem->setPos(0, m_currentNumberRows * m_heightRow);
-        scene->addItem(nameEmployeeItem);
-
-        QString toolTip = QString("Начало: %1\nКонец: %2")
-                              .arg(QLocale::system().toString(vacationStart))
-                              .arg(QLocale::system().toString(vacationEnd));
-
-        itemRect->setToolTip(toolTip);
-
-        ++m_currentNumberRows;
+        addRow(scene, m_employeesQuery, oldName);
     }
 
+    ++m_currentNumberRows;
     drawLine(scene);
 
-    for (int i = 0; i < m_numberofmounth; ++i)
-    {
-        QGraphicsRectItem* itemRect = nullptr;
-
-        auto selectedBrush = m_standards[i].currentNumber > m_standards[i].standardNumber
-                                 ? QBrush(Qt::red)
-                                 : QBrush(Qt::green);
-
-        itemRect = scene->addRect(accumulateDays(i)
-                                  , (m_currentNumberRows + 0.5) * m_heightRow
-                                  , m_months[i].second * m_scale
-                                  , m_heightRow
-                                  , QPen(Qt::black)
-                                  , selectedBrush);
-
-        scene->addLine(m_widthEmployeeName + accumulateDays(i)
-                       , 0
-                       , m_widthEmployeeName + accumulateDays(i)
-                       , (m_currentNumberRows + 1) * m_heightRow
-                       , QPen(Qt::black));
-
-        itemRect->setPos(m_widthEmployeeName, 0);
-        addTextToRect(scene, itemRect, m_months[i].first);
-    }
+    addMonths(scene);
 
     scene->setSceneRect(0
                         , 0
@@ -129,7 +79,7 @@ void SceneCreator::addTextToRect(QGraphicsScene* scene, QGraphicsRectItem* itemR
 
     QGraphicsTextItem* textItem = scene->addText(text);
     itemRect->rect().getRect(&x1Rect, &y1Rect, &widthRect, &heightRect);
-    textItem->setPos(x1Rect + widthRect / 2 + m_widthEmployeeName - textItem->boundingRect().width() / 2
+    textItem->setPos(x1Rect + widthRect / 2 - textItem->boundingRect().width() / 2
                      , y1Rect - heightRect / 2 + m_scale);
 }
 
@@ -151,4 +101,67 @@ int SceneCreator::accumulateDays(int end)
     }
 
     return sum;
+}
+
+void SceneCreator::addRow(QGraphicsScene* scene, QSqlQuery* employeesQuery, QString& oldName)
+{
+    QString name        = m_employeesQuery->value(0).toString();
+    QDate vacationStart = m_employeesQuery->value(1).toDate();
+    QDate vacationEnd   = m_employeesQuery->value(2).toDate();
+
+    if (name != oldName)
+    {
+        //create a value storing the employee's name
+        QGraphicsTextItem* nameEmployeeItem = new QGraphicsTextItem(name);
+        nameEmployeeItem->setPos(0, ++m_currentNumberRows * m_heightRow);
+        scene->addItem(nameEmployeeItem);
+
+        oldName = name;
+    }
+
+    //create a rectangle with which we visualize the duration of the employee’s vacation
+    QGraphicsRectItem* itemRect = scene->addRect(m_widthEmployeeName + vacationStart.dayOfYear() * m_scale
+                                                , m_currentNumberRows * m_heightRow + m_heightRow / 2
+                                                , (vacationEnd.dayOfYear() - vacationStart.dayOfYear()) * m_scale
+                                                , m_heightRow
+                                                , QPen(Qt::black)
+                                                , QBrush(Qt::yellow));
+
+    //place the number of employee vacation days in the center of the rectangle
+    addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
+
+    QString toolTip = QString("Начало: %1\nКонец: %2")
+                             .arg(QLocale::system().toString(vacationStart))
+                             .arg(QLocale::system().toString(vacationEnd));
+
+    itemRect->setToolTip(toolTip);
+
+    drawLine(scene);
+}
+
+void SceneCreator::addMonths(QGraphicsScene* scene)
+{
+    for (int i = 0; i < m_numberofmounth; ++i)
+    {
+        QGraphicsRectItem* itemRect = nullptr;
+
+        auto selectedBrush = m_standards[i].currentNumber > m_standards[i].standardNumber
+                             ? QBrush(Qt::red)
+                             : QBrush(Qt::green);
+
+        itemRect = scene->addRect(m_widthEmployeeName + accumulateDays(i)
+                                  , (m_currentNumberRows + 0.5) * m_heightRow
+                                  , m_months[i].second * m_scale
+                                  , m_heightRow
+                                  , QPen(Qt::black)
+                                  , selectedBrush);
+
+        scene->addLine(m_widthEmployeeName + accumulateDays(i)
+                       , m_heightRow * 1.5
+                       , m_widthEmployeeName + accumulateDays(i)
+                       , (m_currentNumberRows + 1) * m_heightRow
+                       , QPen(Qt::black));
+
+        addTextToRect(scene, itemRect, m_months[i].first);
+    }
 }

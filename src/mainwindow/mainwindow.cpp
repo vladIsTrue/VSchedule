@@ -35,7 +35,7 @@ void MainWindow::setupUI()
     setWindowTitle("График отпусков сотрудников");
 
     auto resultSelect =
-        m_sceneCreator->setQueryFromDB("SELECT name, startofvacation, endofvacation FROM employees"
+        m_sceneCreator->setQueryFromDB("SELECT name, startofvacation, endofvacation FROM employees ORDER BY name"
                                        , QueryCode::EMPLOYEES);
 
     resultSelect.isValid() ? LOGE(resultSelect) : LOGD("Selection from "
