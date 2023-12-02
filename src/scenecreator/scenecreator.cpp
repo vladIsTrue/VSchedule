@@ -128,7 +128,7 @@ void SceneCreator::addRow(QGraphicsScene* scene, QSqlQuery* employeesQuery, QStr
                                                 , QBrush(Qt::yellow));
 
     //place the number of employee vacation days in the center of the rectangle
-    addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear()));
+    addTextToRect(scene, itemRect, QString::number(vacationEnd.dayOfYear() - vacationStart.dayOfYear() + 1));
 
     QString toolTip = QString("Начало: %1\nКонец: %2")
                              .arg(QLocale::system().toString(vacationStart))
