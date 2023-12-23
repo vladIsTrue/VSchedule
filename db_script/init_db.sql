@@ -3,15 +3,15 @@ CREATE DATABASE vacation;
 \c vacation;
 
 CREATE TABLE employees (
-	id		SERIAL 		PRIMARY KEY,
-	name		varchar(90)	NOT NULL,
-	startofvacation DATE		NOT NULL,	
-	endofvacation	DATE		NOT NULL
+	id			SERIAL		PRIMARY KEY,
+	name			varchar(90)	NOT NULL,
+	startofvacation		DATE		NOT NULL,	
+	endofvacation		DATE		NOT NULL
 );
 
 CREATE TABLE  standards (
-   month_name 		varchar (10)	NOT NULL,
-   numberofemployees 	int		NOT NULL
+	month_name 		varchar (10)	NOT NULL,
+	numberofemployees 	int		NOT NULL
 );
 
 INSERT INTO employees (name, startofvacation, endofvacation) 
